@@ -165,7 +165,6 @@ func main() {
 	done := make(chan bool)
 
 	go func() {
-		apiKey := "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"
 		for {
 			select {
 			case <-done:
