@@ -1,9 +1,7 @@
-markdown
 
-# Score kya?
-
+# ScoreKya?
 <p align="center">
-   <img src="https://example.com/cricket_logo.png" alt="Cricket Logo" width="250" height="250">
+   <img src="docs/logo.png" alt="Cricket Logo" width="100" height="100">
 </p>
 
 This Go application fetches live cricket scores from Cricbuzz and generates AI-powered meta commentary using OpenAI's GPT-3.5 model.

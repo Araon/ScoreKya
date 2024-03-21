@@ -194,9 +194,7 @@ func main() {
 						bowlersStr = strings.TrimSuffix(bowlersStr, ", ")
 
 						// Construct the prompt
-						input := fmt.Sprintf("You are a Expert Cricket analysit , Based on the data given please summarize and predict the following cricket match data into a single sentence. Include the current score, batsmen performances (runs and balls), and bowlers performances (runs conceded and wickets):\nCurrent score: %s\nBatsmen: %s\nBowlers: %s", score, batsmenStr, bowlersStr)
-
-						// fmt.Printf("PROMPT USED: Please summarize the following cricket match data into a single sentence. Include the current score, batsmen performances (runs and balls), and bowlers performances (runs conceded and wickets):\nCurrent score: %s\nBatsmen: %s\nBowlers: %s\n\n", score, batsmenStr, bowlersStr)
+						input := fmt.Sprintf("You are a comedian, Based on the data given please summarize and predict the following cricket match data into a single sentence. Include the current score, batsmen performances (runs and balls), and bowlers performances (runs conceded and wickets):\nCurrent score: %s\nBatsmen: %s\nBowlers: %s", score, batsmenStr, bowlersStr)
 
 						request := OpenAIRequest{
 							Model: openai.GPT3Dot5Turbo,
@@ -207,7 +205,7 @@ func main() {
 								},
 							},
 							MaxTokens:   1024,
-							Temperature: 0.7,
+							Temperature: 0.8,
 						}
 
 						condensedScore, err := callOpenAI(request, apiKey)
