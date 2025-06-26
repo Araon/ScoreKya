@@ -33,20 +33,11 @@ type Bowler struct {
 	Wickets string
 }
 
-type Message struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
-}
-
 type OpenAIRequest struct {
 	Model       string                         `json:"model"`
 	Messages    []openai.ChatCompletionMessage `json:"messages"`
 	MaxTokens   int                            `json:"max_tokens"`
 	Temperature float64                        `json:"temperature"`
-}
-
-type OpenAIResponse struct {
-	Choices []openai.ChatCompletionChoice `json:"choices"`
 }
 
 func ParseTitle(title string) string {
@@ -56,9 +47,9 @@ func ParseTitle(title string) string {
 
 func GetLiveScore(link string) (string, []Batsman, []Bowler) {
 	score := ""
-	currentBats := []Batsman{}
+	var currentBats []Batsman
 	flag := 0
-	currentBowls := []Bowler{}
+	var currentBowls []Bowler
 	c := colly.NewCollector()
 
 	c.OnHTML("div", func(e *colly.HTMLElement) {
@@ -90,7 +81,10 @@ func GetLiveScore(link string) (string, []Batsman, []Bowler) {
 		}
 	})
 
-	c.Visit("https://www.cricbuzz.com" + link)
+	err := c.Visit("https://www.cricbuzz.com" + link)
+	if err != nil {
+		return "", nil, nil
+	}
 	return score, currentBats, currentBowls
 }
 
@@ -126,7 +120,7 @@ func main() {
 	}
 
 	c := colly.NewCollector()
-	matches := []Matches{}
+	var matches []Matches
 
 	c.OnHTML("div", func(e *colly.HTMLElement) {
 		if e.Attr("class") == "cb-col-100 cb-col cb-schdl cb-billing-plans-text" {
@@ -139,7 +133,10 @@ func main() {
 		}
 	})
 
-	c.Visit("https://www.cricbuzz.com/cricket-match/live-scores")
+	err = c.Visit("https://www.cricbuzz.com/cricket-match/live-scores")
+	if err != nil {
+		return
+	}
 
 	menu := gocliselect.NewMenu("Choose the match")
 
@@ -152,7 +149,10 @@ func main() {
 
 	var useOpenAI string
 	fmt.Println("Do want to enable AI generated meta Comentary?: ")
-	fmt.Scan(&useOpenAI)
+	_, err = fmt.Scan(&useOpenAI)
+	if err != nil {
+		return
+	}
 
 	var mu sync.Mutex
 	openAICallCounter := 0
